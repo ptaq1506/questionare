@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="../../Scripts/jquery-1.10.2.js"></script>
+    <script src="../../Scripts/knockout-3.3.0.debug.js"></script>
+
+    <script src="../../Scripts/bootstrap.js"></script>
+    <script src="../../Scripts/respond.js"></script>
+
+    <script src="../../Scripts/modernizr-2.6.2.js"></script>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/font-awesome.css" rel="stylesheet" />
+    <link href="../../Content/Site.css" rel="stylesheet" />
+
+    <script src="../../Scripts/ViewModels/NewQuestionareFormVM.js"></script>
+    <script src="../../Scripts/ViewModels/QuestionVM.js"></script>
+    <script src="../../Scripts/ViewModels/NewQuestionareModalVM.js"></script>
+    <script src="../../Scripts/ViewModels/QuestionOptionVM.js"></script>
+    <script src="../../Scripts/ViewModels/LeftMenuVM.js"></script>
+    <script src="../../Scripts/ViewModels/ManageVM.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Kwestionariusz", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a data-toggle="modal" data-target="#new_questionare_modal">Nowy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+   
+    <div class="container body-content">
+        <div id="manage_panel">
+            <h4>Zarządzaj swoimi ankietami</h4>
+            <hr />
+            <div class="row">
+                <dl class="dl-horizontal">
+                    <dt>Moje ankiety:</dt>
+                </dl>
+                <div style="margin-left: 5px; margin-top: -5px; float: left;" data-bind="foreach: questionares">
+                    <div data-bind="click: selected, text: name">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="new_questionare_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"> Nowy kwestionariusz </h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" placeholder="Nazwa" data-bind="value: name" style="width: 400px; margin: auto;" />
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn-primary custom_button modal_button" value="Zamknij" data-dismiss="modal" />
+                    <input data-bind="click: save" type="button" class="btn-primary custom_button modal_button" value="Dalej" />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<script>
+    var ManageVM;
+
+    $(document).ready(function () {
+        var NewQuestionareModalVM = new newQuestionareModalVM();
+        ko.applyBindings(NewQuestionareModalVM, document.getElementById("new_questionare_modal"));
+
+        ManageVM = new manageVM();
+
+        ko.applyBindings(ManageVM, document.getElementById("manage_panel"));
+    });
+</script>

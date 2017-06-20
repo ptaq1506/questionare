@@ -1,0 +1,77 @@
+﻿@model int
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="../../Scripts/jquery-1.10.2.js"></script>
+    <script src="../../Scripts/knockout-3.3.0.debug.js"></script>
+
+    <script src="../../Scripts/bootstrap.js"></script>
+    <script src="../../Scripts/respond.js"></script>
+
+    <script src="../../Scripts/modernizr-2.6.2.js"></script>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/font-awesome.css" rel="stylesheet" />
+    <link href="../../Content/site.css" rel="stylesheet" />
+    <script src="../../Content/Add.css"></script>
+
+    <script src="../../Scripts/ViewModels/PublishedQuestionareVM.js"></script>
+    <script src="../../Scripts/ViewModels/PublishedQuestionVM.js"></script>
+
+    <script src="../../Scripts/ViewModels/QuestionOptionVM.js"></script>
+</head>
+<body class="read">
+    <div class="container body-content">
+        <div id="questionare_content">
+            <div data-bind="visible: formVisibility">
+                <h2 class="title" data-bind="text: name"></h2>
+                <ul class="questions_list list-unstyled" data-bind="foreach: questions">
+                    <li>
+                        <div class="row">
+                            <div class="row">
+                                <div class="lp">
+                                    <label data-bind="text: lp" style="float: left; font-size: 16px; margin-right: 25px;"></label>
+                                </div>
+                                <div class="col-md-11">
+                                    <input type="text" class="form-control" placeholder="Treść pytania" data-bind="value: question" />
+                                </div>
+                            </div>
+                            <div class="answers" data-bind="foreach: answers">
+                                <div class="answer" data-bind="visible: $parent.answerVisible">
+                                    <input type="checkbox" data-bind="visible: $parent.manyAnswer, event: { mouseup: mouseupEvent }" />
+                                    <input type="radio" data-bind="visible: $parent.singleAnswer, attr: { name: lp}, event: { mouseup: mouseupEvent }" />
+                                    <input type="text" data-bind="value: optionText" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <input type="button" value="Zapisz" data-bind="click: save" />
+            </div>
+            <div style="margin-top: 10%;" data-bind="visible: formVisibility() == false ? true : false">
+                <h2 style="text-align: center;">Dziękujemy za poświęcony czas !</h2>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var PublishedQuestionareVM;
+
+    $(document).ready(function () {
+
+        PublishedQuestionareVM = new publishedQuestionareVM(@Model);
+
+        ko.applyBindings(PublishedQuestionareVM, document.getElementById("#questionare_content"));
+    });
+</script>
+
+<style>
+    .container {
+        margin-left: 50px !important;
+    }
+</style>

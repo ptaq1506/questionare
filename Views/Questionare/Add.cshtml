@@ -1,0 +1,107 @@
+﻿@model Data.QuestionareEntity
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="../../Scripts/jquery-1.10.2.js"></script>
+    <script src="../../Scripts/knockout-3.3.0.debug.js"></script>
+
+    <script src="../../Scripts/bootstrap.js"></script>
+    <script src="../../Scripts/respond.js"></script>
+
+    <script src="../../Scripts/modernizr-2.6.2.js"></script>
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/font-awesome.css" rel="stylesheet" />
+    <link href="../../Content/site.css" rel="stylesheet" />
+    <script src="../../Content/Add.css"></script>
+
+    <script src="../../Scripts/ViewModels/NewQuestionareFormVM.js"></script>
+    <script src="../../Scripts/ViewModels/QuestionVM.js"></script>
+
+    <script src="../../Scripts/ViewModels/QuestionOptionVM.js"></script>
+    <script src="../../Scripts/ViewModels/LeftMenuVM.js"></script>
+
+</head>
+<body class="add">
+
+    <h3>Nowy kwestionariusz</h3>
+
+    <div id="questionare_content">
+        <h2 class="title">@Model.Name</h2>
+        <ul class="questions_list list-unstyled" data-bind="foreach: questions">
+            <li>
+                <div class="row">
+                    <div class="row">
+                        <div class="lp">
+                            <label data-bind="text: lp" style="float: left; font-size: 16px; margin-right: 25px;"></label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" placeholder="Treść pytania" data-bind="value: question" />
+                        </div>
+                        <div class="actions">
+                            <i class="fa fa-floppy-o fa-2x"></i>
+                            <i class="fa fa-trash fa-2x" style="color: red;" data-bind="click: remove"></i>
+                        </div>
+                    </div>
+                    <div class="answers" data-bind="foreach: answers">
+                        <div class="answer" data-bind="visible: $parent.answerVisible">
+                            <input type="checkbox" data-bind="visible: $parent.manyAnswer" />
+                            <input type="radio" data-bind="visible: $parent.singleAnswer, attr: { name: lp}" />
+                            <input type="text" data-bind="value: optionText" />
+                        </div>
+                    </div>
+                    <label class="addAnswerLabel" data-bind="click: addAnswer, visible: answerVisible">Dodaj odpowiedź</label>
+                </div>
+            </li>
+        </ul>
+        <input type="button" value="Zapisz" data-bind="click: save" />
+    </div>
+
+    <div id="right_menu" data-bind="with: LeftMenuVM">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                Rodzaje pytań
+            </a>
+            <a href="#" class="list-group-item" data-bind="click: singleQuestion">Jedna odpowiedź</a>
+            <a href="#" class="list-group-item" data-bind="click: manyAnswerQuestion">Wiele odpowiedzi</a>
+            <a href="#" class="list-group-item" data-bind="click: openQuestion">Otwarte</a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saved_result_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"> Twoja ankieta została zapisana pomyślnie </h4>
+                </div>
+                <div class="modal-body">
+                    <label>Link do ankiety</label>
+                    <span id="questionare_link"></span>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn-primary custom_button modal_button" value="Zamknij" data-dismiss="modal" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    var LeftMenuVM;
+    var NewQuestionareFormVM;
+
+    $(document).ready(function () {
+
+        NewQuestionareFormVM = new newQuestionareFormVM(@Model.Id);
+        LeftMenuVM = new leftMenuVM();
+
+        ko.applyBindings(NewQuestionareFormVM, document.getElementById("#questionare_content"));
+    });
+    </script>
+
+</body>
+</html>
